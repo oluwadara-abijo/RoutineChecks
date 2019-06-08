@@ -41,11 +41,24 @@ dependencies {
     //Kotlin extensions
     implementation 'androidx.core:core-ktx:1.0.2'
 
-    //Room dependencies
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
+    // Room components
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
-    //LiveData and ViewModel dependencies
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidxArchVersion"
 
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
+
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
