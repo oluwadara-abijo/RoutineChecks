@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class RoutineViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository
-    private val allRoutines: LiveData<List<Routine>>
+    val allRoutines: LiveData<List<Routine>>
 
     init {
         val routineDao = RoutineRoomDatabase.getDatabase(application).routineDao()
