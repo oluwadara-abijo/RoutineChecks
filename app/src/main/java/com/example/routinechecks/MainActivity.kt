@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +28,11 @@ class MainActivity : AppCompatActivity() {
         //Set up recycler view
         val recyclerView = routinesList
         val adapter = RoutineListAdapter(this)
+        val layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+        val itemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
+        recyclerView.addItemDecoration(itemDecoration)
 
         //Get ViewModel from Provider
         mViewModel = ViewModelProviders.of(this).get(RoutineViewModel::class.java)
