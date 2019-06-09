@@ -34,27 +34,23 @@
             android:hint="@string/description" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/frequencyLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.NewRoutine"
+    <Spinner
+        android:id="@+id/frequencySpinner"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routineDescriptionLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/frequencyInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
-            android:hint="@string/frequency" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/routineDescriptionLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/startTimeLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.NewRoutine"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frequencyLayout">
+        app:layout_constraintTop_toBottomOf="@+id/frequencySpinner">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/startTimeInput"
@@ -64,6 +60,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_32"

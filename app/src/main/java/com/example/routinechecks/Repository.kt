@@ -8,7 +8,7 @@ class Repository(private val routineDao: RoutineDao) {
     val allRoutines: LiveData<List<Routine>> = routineDao.getAllRoutines()
 
     @WorkerThread
-    suspend fun insert(routine: Routine) {
+    suspend fun addRoutine(routine: Routine) {
         routineDao.addRoutine(routine)
     }
 }
