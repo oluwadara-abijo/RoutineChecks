@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 
 @Database(entities = [Routine::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-public abstract class RoutineRoomDatabase : RoomDatabase() {
+abstract class RoutineRoomDatabase : RoomDatabase() {
     abstract fun routineDao(): RoutineDao
 
     companion object {

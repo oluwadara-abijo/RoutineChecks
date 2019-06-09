@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         //Start new routine activity when FAB is clicked
         newRoutine.setOnClickListener {
             val intent = Intent(this, NewRoutineActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, newRoutineActivityRequestCode)
         }
     }
 

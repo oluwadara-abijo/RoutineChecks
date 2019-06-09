@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_new_routine.*
 
-class NewRoutineActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class NewRoutineActivity : AppCompatActivity() {
 
     private var frequency: String = ""
 
@@ -29,10 +29,11 @@ class NewRoutineActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     }
 
     private fun createNewRoutine() {
-        val intent = Intent()
         val title = routineNameInput.text.toString()
         val description = routineDescriptionInput.text.toString()
         val routine = Routine(title, description, frequency)
+
+        val intent = Intent()
         intent.putExtra(EXTRA_ROUTINE, routine)
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -47,15 +48,17 @@ class NewRoutineActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 // Apply the adapter to the spinner
                 frequencySpinner.adapter = adapter
             }
-    }
+        frequencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (parent != null) {
+                    frequency = parent.getItemAtPosition(position).toString()
+                }
+            }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        frequency = "Selected"
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (parent != null) {
-            frequency = parent.getItemAtPosition(position).toString()
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                frequency = "Daily"
+            }
         }
     }
+
 }
