@@ -11,4 +11,9 @@ class Repository(private val routineDao: RoutineDao) {
     fun addRoutine(routine: Routine) {
         routineDao.addRoutine(routine)
     }
+
+    @WorkerThread
+    fun updateRoutine(routine: Routine) {
+        routineDao.updateRoutine(routine)
+    }
 }

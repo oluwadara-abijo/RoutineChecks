@@ -1,9 +1,7 @@
 package com.example.routinechecks
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface RoutineDao {
@@ -16,6 +14,9 @@ interface RoutineDao {
 
     @Insert
     fun addRoutine(routine: Routine)
+
+    @Update
+    fun updateRoutine (routine: Routine)
 
     @Query ("UPDATE routines_table SET completedRoutines = completedRoutines + 1 WHERE title = :title")
     fun markAsDone (title: String)

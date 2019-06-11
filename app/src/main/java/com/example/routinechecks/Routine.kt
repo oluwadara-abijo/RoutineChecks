@@ -9,10 +9,11 @@ import java.util.*
 @Parcelize
 @Entity(tableName = "routines_table")
 data class Routine(
-    @PrimaryKey val title: String,
-    val description: String? = null,
-    val frequency: String,
-    val missedRoutines: Int = 0,
-    val completedRoutines: Int = 0,
-    val startTime: Date? = null
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    var title: String,
+    var description: String?,
+    var frequency: String,
+    var missedRoutines: Int = 0,
+    var completedRoutines: Int = 0,
+    var startTime: Date? = null
 ) : Parcelable

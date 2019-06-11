@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
     //Request code
     companion object {
         const val newRoutineActivityRequestCode = 1
+        const val existingRoutineActivityRequestCode = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         recyclerView.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
         recyclerView.addItemDecoration(itemDecoration)
+        recyclerView.hasFixedSize()
 
         //Get ViewModel from Provider
         mViewModel = ViewModelProviders.of(this).get(RoutineViewModel::class.java)
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         //Get all routines in database
         mViewModel.allRoutines.observe(this, Observer { routines ->
             routines?.let { adapter.setRoutines(routines) }
+
         })
 
         //Start new routine activity when FAB is clicked
@@ -52,14 +55,16 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
             val intent = Intent(this, NewRoutineActivity::class.java)
             startActivityForResult(intent, newRoutineActivityRequestCode)
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == newRoutineActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val routine: Routine = it.getParcelableExtra(NewRoutineActivity.EXTRA_ROUTINE)
-                mViewModel.addRoutine(routine)
+        if (resultCode == Activity.RESULT_OK) {
+            val routine = data?.getParcelableExtra(NewRoutineActivity.EXTRA_ROUTINE) as Routine
+            when (requestCode) {
+                newRoutineActivityRequestCode -> mViewModel.addRoutine(routine)
+                existingRoutineActivityRequestCode -> {mViewModel.updateRoutine(routine)}
             }
         }
     }
@@ -70,7 +75,9 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
                 Toast.makeText(this, "Item clicked", Toast.LENGTH_SHORT).show()
             }
             is RoutineListAdapter.ListenerType.EditClickListener -> {
-                Toast.makeText(this, "Edit icon clicked", Toast.LENGTH_SHORT).show()
+                val editIntent = Intent(this, NewRoutineActivity::class.java)
+                editIntent.putExtra(NewRoutineActivity.EXTRA_ROUTINE, routine)
+                startActivityForResult(editIntent, existingRoutineActivityRequestCode)
             }
         }
     }

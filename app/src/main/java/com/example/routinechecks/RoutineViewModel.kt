@@ -21,4 +21,8 @@ class RoutineViewModel(application: Application) : AndroidViewModel(application)
     fun addRoutine(routine: Routine) = viewModelScope.launch(Dispatchers.IO) {
         repository.addRoutine(routine)
     }
+
+    fun updateRoutine(routine: Routine) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateRoutine(routine)
+    }
 }

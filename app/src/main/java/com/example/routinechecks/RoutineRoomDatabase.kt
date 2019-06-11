@@ -25,7 +25,7 @@ abstract class RoutineRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     RoutineRoomDatabase::class.java,
                     "ROUTINE_DATABASE"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }
