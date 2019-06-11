@@ -1,6 +1,7 @@
 package com.example.routinechecks
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +44,9 @@ class NewRoutineActivity : AppCompatActivity() {
 
         //Set click listener on start time edit text
         startTimeInput.setOnClickListener { pickStartTime() }
+
+        //Set click listener on start date edit text
+        startDateInput.setOnClickListener { pickStartDate() }
 
     }
 
@@ -110,6 +114,7 @@ class NewRoutineActivity : AppCompatActivity() {
     }
 
     private fun formatTime(hour: Int, min: Int): String {
+        //Format time string to contain two digits
         val twoDigitMinute: String = if (min < 10) {
             "0$min"
         } else {
@@ -143,6 +148,46 @@ class NewRoutineActivity : AppCompatActivity() {
         )
         timePickerDialog.setTitle("")
         timePickerDialog.show()
+    }
+
+    private fun formatDate(day: Int, month: Int, year: Int): String {
+        //Format time string to contain two digits for day and month
+        val monthDigit = month + 1
+        val twoDigitDay: String = if (day < 10) {
+            "0$day"
+        } else {
+            day.toString()
+        }
+        val twoDigitMonth: String = if (monthDigit < 10) {
+            "0$monthDigit"
+        } else {
+            monthDigit.toString()
+        }
+        return "$twoDigitDay-$twoDigitMonth-$year"
+    }
+
+    private fun pickStartDate() {
+
+        //Set default values for the picker to be current date
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        //Create a new instance of DatePickerDialog and show it
+        val datePickerDialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, yearSet, monthSet, daySet ->
+                //Set date chosen on edit text
+                startDateInput.setText(formatDate(daySet, monthSet, yearSet))
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.datePicker.minDate = calendar.timeInMillis
+        datePickerDialog.setTitle("")
+        datePickerDialog.show()
     }
 
 }

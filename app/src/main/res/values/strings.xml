@@ -9,6 +9,7 @@
     <string name="save">Save</string>
     <string name="edit_icon">Edit icon</string>
     <string name="update">Update</string>
+    <string name="start_date">Start date</string>
     <string-array name="frequency_array">
         <item>Select frequency</item>
         <item>Hourly</item>
