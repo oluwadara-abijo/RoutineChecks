@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_new_routine.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NewRoutineActivity : AppCompatActivity() {
@@ -20,6 +21,9 @@ class NewRoutineActivity : AppCompatActivity() {
     private var mRoutine: Routine? = null
 
     private var isNewRoutine: Boolean = true
+
+    private var timePicked: String = ""
+    private var datePicked: String = ""
 
     companion object {
         const val EXTRA_ROUTINE = "mRoutine"
@@ -53,10 +57,11 @@ class NewRoutineActivity : AppCompatActivity() {
     private fun saveRoutine() {
         val title = routineNameInput.text.toString()
         val description = routineDescriptionInput.text.toString()
+        val startTime = getRoutineDate(timePicked, datePicked)
         mRoutine = if (isNewRoutine) {
-            Routine(title = title, description = description, frequency = frequency)
+            Routine(title = title, description = description, frequency = frequency, startTime = startTime)
         } else {
-            Routine(mRoutine!!.id, title, description, frequency)
+            Routine(mRoutine!!.id, title, description, frequency, startTime = startTime)
         }
 
         val intent = Intent()
@@ -140,7 +145,8 @@ class NewRoutineActivity : AppCompatActivity() {
             this,
             TimePickerDialog.OnTimeSetListener { _, hourSet, minuteSet ->
                 //Set time chosen on edit text
-                startTimeInput.setText(formatTime(hourSet, minuteSet))
+                timePicked = formatTime(hourSet, minuteSet)
+                startTimeInput.setText(timePicked)
             },
             hour,
             minute,
@@ -179,7 +185,8 @@ class NewRoutineActivity : AppCompatActivity() {
             this,
             DatePickerDialog.OnDateSetListener { _, yearSet, monthSet, daySet ->
                 //Set date chosen on edit text
-                startDateInput.setText(formatDate(daySet, monthSet, yearSet))
+                datePicked = formatDate(daySet, monthSet, yearSet)
+                startDateInput.setText(datePicked)
             },
             year,
             month,
@@ -188,6 +195,12 @@ class NewRoutineActivity : AppCompatActivity() {
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.setTitle("")
         datePickerDialog.show()
+    }
+
+    private fun getRoutineDate(timeSet: String, dateSet: String) : Date {
+        val dateString = dateSet+"T"+timeSet
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm", Locale.getDefault())
+        return dateFormat.parse(dateString)
     }
 
 }
