@@ -1,6 +1,7 @@
 package com.example.routinechecks
 
 import android.app.Activity
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_new_routine.*
+import java.util.*
 
 class NewRoutineActivity : AppCompatActivity() {
 
@@ -38,6 +40,9 @@ class NewRoutineActivity : AppCompatActivity() {
 
         //Set click listener on save button
         saveButton.setOnClickListener { saveRoutine() }
+
+        //Set click listener on start time edit text
+        startTimeInput.setOnClickListener { pickStartTime() }
 
     }
 
@@ -102,6 +107,42 @@ class NewRoutineActivity : AppCompatActivity() {
                 frequency = "Daily"
             }
         }
+    }
+
+    private fun formatTime(hour: Int, min: Int): String {
+        val twoDigitMinute: String = if (min < 10) {
+            "0$min"
+        } else {
+            min.toString()
+        }
+        val twoDigitHour: String = if (hour < 10) {
+            "0$hour"
+        } else {
+            hour.toString()
+        }
+        return "$twoDigitHour:$twoDigitMinute"
+    }
+
+    private fun pickStartTime() {
+
+        //Set default values for the picker to be current time
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        //Create a new instance of TimePickerDialog and show it
+        val timePickerDialog = TimePickerDialog(
+            this,
+            TimePickerDialog.OnTimeSetListener { _, hourSet, minuteSet ->
+                //Set time chosen on edit text
+                startTimeInput.setText(formatTime(hourSet, minuteSet))
+            },
+            hour,
+            minute,
+            true
+        )
+        timePickerDialog.setTitle("")
+        timePickerDialog.show()
     }
 
 }
