@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_new_routine.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
+import android.util.Log
 
 class NewRoutineActivity : AppCompatActivity() {
 
@@ -51,6 +52,8 @@ class NewRoutineActivity : AppCompatActivity() {
             mRoutine = intent.getParcelableExtra(EXTRA_ROUTINE)
             populateUI(mRoutine)
         }
+
+        Log.d(">>>", mRoutine.completedRoutines.toString())
 
         setupSpinner()
 

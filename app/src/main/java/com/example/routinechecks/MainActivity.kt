@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
 
     //ViewModel member variable
-    private lateinit var mViewModel: RoutineViewModel
+    private lateinit var mViewModel: NewRoutineViewModel
 
     //List of routines
     private lateinit var mRoutines: List<Routine>
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         recyclerView.hasFixedSize()
 
         //Get ViewModel from Provider
-        mViewModel = ViewModelProviders.of(this).get(RoutineViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this).get(NewRoutineViewModel::class.java)
 
         //Get all routines in database
         mViewModel.allRoutines.observe(this, Observer { routines ->

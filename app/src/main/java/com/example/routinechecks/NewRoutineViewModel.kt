@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RoutineViewModel(application: Application) : AndroidViewModel(application) {
+class NewRoutineViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository
     val allRoutines: LiveData<List<Routine>>
