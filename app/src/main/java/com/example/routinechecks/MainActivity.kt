@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -55,6 +56,12 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         //Get all routines in database
         mViewModel.allRoutines.observe(this, Observer { routines ->
             routines?.let { adapter.setRoutines(routines) }
+            //Show empty view if there are no routines
+            if (routines.isEmpty()) {
+                emptyView.visibility = View.VISIBLE
+            } else {
+                emptyView.visibility = View.GONE
+            }
 
         })
 
@@ -72,7 +79,9 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
             val routine = data?.getParcelableExtra(NewRoutineActivity.EXTRA_ROUTINE) as Routine
             when (requestCode) {
                 newRoutineActivityRequestCode -> mViewModel.addRoutine(routine)
-                existingRoutineActivityRequestCode -> {mViewModel.updateRoutine(routine)}
+                existingRoutineActivityRequestCode -> {
+                    mViewModel.updateRoutine(routine)
+                }
             }
         }
     }
@@ -80,7 +89,7 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
     override fun onItemClick(routine: Routine, listenerType: RoutineListAdapter.ListenerType) {
         when (listenerType) {
             is RoutineListAdapter.ListenerType.RoutineClickListener -> {
-                Toast.makeText(this, "Item clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Item clicked", Toast.LENGTH_SHORT).show()
             }
             is RoutineListAdapter.ListenerType.EditClickListener -> {
                 val editIntent = Intent(this, NewRoutineActivity::class.java)

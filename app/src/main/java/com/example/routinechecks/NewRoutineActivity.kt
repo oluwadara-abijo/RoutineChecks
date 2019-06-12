@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_new_routine.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
-import android.util.Log
+import com.google.android.material.snackbar.Snackbar
 
 class NewRoutineActivity : AppCompatActivity() {
 
@@ -53,8 +53,6 @@ class NewRoutineActivity : AppCompatActivity() {
             populateUI(mRoutine)
         }
 
-        Log.d(">>>", mRoutine.completedRoutines.toString())
-
         setupSpinner()
 
         //Set click listener on save button
@@ -71,18 +69,24 @@ class NewRoutineActivity : AppCompatActivity() {
     private fun saveRoutine() {
         val title = routineNameInput.text.toString()
         val description = routineDescriptionInput.text.toString()
-        val startTime = getRoutineDate(timePicked, datePicked)
-        mRoutine = if (isNewRoutine) {
-            Routine(title = title, description = description, frequency = frequency, startTime = startTime)
+
+        if (title.isBlank() || startDateInput.text.toString().isBlank() || startTimeInput.text.toString().isBlank()) {
+            Snackbar.make(saveButton, "Fill in all required fields", Snackbar.LENGTH_SHORT).show()
         } else {
-            Routine(mRoutine.id, title, description, frequency, startTime = startTime)
+            val startTime = getRoutineDate(timePicked, datePicked)
+            mRoutine = if (isNewRoutine) {
+                Routine(title = title, description = description, frequency = frequency, startTime = startTime)
+            } else {
+                Routine(mRoutine.id, title, description, frequency, startTime = startTime)
+            }
+
+            setReminder(this)
+            val intent = Intent()
+            intent.putExtra(EXTRA_ROUTINE, mRoutine)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
 
-        setReminder(this)
-        val intent = Intent()
-        intent.putExtra(EXTRA_ROUTINE, mRoutine)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
     }
 
     private fun populateUI(routine: Routine) {
@@ -223,7 +227,7 @@ class NewRoutineActivity : AppCompatActivity() {
     }
 
     private fun getRoutineFrequency(routine: Routine): Long {
-        var freq: Long = 0
+        var freq: Long = AlarmManager.INTERVAL_DAY
         when (routine.frequency) {
             FREQ_HOURLY -> freq = AlarmManager.INTERVAL_HOUR
             FREQ_DAILY -> freq = AlarmManager.INTERVAL_DAY

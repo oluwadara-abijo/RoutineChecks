@@ -45,9 +45,9 @@ class RoutineService : BroadcastReceiver() {
                     .build()
 
             val builder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_check_box_black_24dp)
+                .setSmallIcon(R.drawable.ic_check_white_24dp)
                 .setContentTitle(mRoutine.title)
-                .setContentText("5 minutes reminder")
+                .setContentText("Next routine is in 5 minutes")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
