@@ -9,7 +9,6 @@ import androidx.core.app.NotificationManagerCompat
 import android.media.RingtoneManager
 
 
-
 class RoutineService : BroadcastReceiver() {
 
     companion object {
@@ -24,29 +23,43 @@ class RoutineService : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         //Get the routine
         val action: String? = intent.action
-        if (action == "my.action.routine")
+        if (action == "my.action.routine") {
             mRoutine = intent.getParcelableExtra(EXTRA_ROUTINE)
 
-        // Create an explicit intent to start MainActivity
-        val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
+            // Create an explicit intent to start MainActivity
+            val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
 
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            //Create notification
+            val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_check_box_black_24dp)
-            .setContentTitle(mRoutine.title)
-            .setContentText("5 minutes reminder")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .setSound(alarmSound)
+            val intentAction = Intent(context, ActionReceiver::class.java)
+            intentAction.putExtra("ROUTINE", mRoutine)
+            val actionPendingIntent: PendingIntent =
+                PendingIntent.getBroadcast(context, 1, intentAction, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        with(NotificationManagerCompat.from(context)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(notificationId, builder.build())
+            val markAsDoneAction =
+                NotificationCompat.Action.Builder(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ, "Mark as done", actionPendingIntent)
+                    .build()
+
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_check_box_black_24dp)
+                .setContentTitle(mRoutine.title)
+                .setContentText("5 minutes reminder")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSound(alarmSound)
+                .setTimeoutAfter(5 * 60 * 1000)
+                .addAction(markAsDoneAction)
+
+            with(NotificationManagerCompat.from(context)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId, builder.build())
+            }
+
         }
     }
 
