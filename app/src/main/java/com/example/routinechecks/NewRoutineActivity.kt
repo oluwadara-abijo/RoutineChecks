@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_new_routine.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
-import android.util.Log
 
 class NewRoutineActivity : AppCompatActivity() {
 
@@ -237,9 +236,12 @@ class NewRoutineActivity : AppCompatActivity() {
         lateinit var alarmIntent: PendingIntent
         alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent =
-            Intent(context, RoutineService::class.java).putExtra(RoutineService.EXTRA_ROUTINE, mRoutine).let { intent ->
+            Intent(context, RoutineService::class.java).let { intent ->
                 PendingIntent.getBroadcast(context, 0, intent, 0)
             }
+        val extraIntent = Intent("my.action.routine")
+        extraIntent.putExtra(RoutineService.EXTRA_ROUTINE, mRoutine)
+        sendBroadcast(extraIntent)
 
         // Set the alarm to start at chosen start time
         val calendar: Calendar = Calendar.getInstance().apply {
@@ -250,7 +252,6 @@ class NewRoutineActivity : AppCompatActivity() {
             set(Calendar.HOUR_OF_DAY, hourPicked)
             set(Calendar.MINUTE, minutePicked - 5)
             set(Calendar.SECOND, 0)
-            Log.d(">>>", (minutePicked - 5).toString())
         }
 
         //specify alarm frequency
