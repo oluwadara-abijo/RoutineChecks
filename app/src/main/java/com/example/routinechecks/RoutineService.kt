@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import android.media.RingtoneManager
+import android.util.Log
 
 
 class RoutineService : BroadcastReceiver() {
@@ -21,9 +22,10 @@ class RoutineService : BroadcastReceiver() {
     private val channelId: String = "reminder_channel"
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d("ON_RECEIVE>>>", "onReceive called")
         //Get the routine
-        val action: String? = intent.action
-        if (action == "my.action.routine") {
+        if (intent.hasExtra(EXTRA_ROUTINE)) {
+
             mRoutine = intent.getParcelableExtra(EXTRA_ROUTINE)
 
             // Create an explicit intent to start MainActivity
@@ -41,7 +43,11 @@ class RoutineService : BroadcastReceiver() {
                 PendingIntent.getBroadcast(context, 1, intentAction, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val markAsDoneAction =
-                NotificationCompat.Action.Builder(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ, "Mark as done", actionPendingIntent)
+                NotificationCompat.Action.Builder(
+                    NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ,
+                    "Mark as done",
+                    actionPendingIntent
+                )
                     .build()
 
             val builder = NotificationCompat.Builder(context, channelId)
@@ -56,10 +62,11 @@ class RoutineService : BroadcastReceiver() {
                 .addAction(markAsDoneAction)
 
             with(NotificationManagerCompat.from(context)) {
-                // notificationId is a unique int for each notification that you must define
                 notify(notificationId, builder.build())
             }
 
+        } else {
+            Log.d("ON_RECEIVE>>>", "onReceive called, no extras")
         }
     }
 

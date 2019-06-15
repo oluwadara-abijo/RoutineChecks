@@ -90,6 +90,7 @@ class NewRoutineActivity : AppCompatActivity() {
     }
 
     private fun populateUI(routine: Routine) {
+        //If routine is being updated, populate the UI with routine information
         routineNameInput.setText(routine.title)
         routineDescriptionInput.setText(routine.description)
         saveButton.text = getString(R.string.update)
@@ -243,12 +244,9 @@ class NewRoutineActivity : AppCompatActivity() {
         lateinit var alarmIntent: PendingIntent
         alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent =
-            Intent(context, RoutineService::class.java).let { intent ->
+            Intent(context, RoutineService::class.java).putExtra(RoutineService.EXTRA_ROUTINE, mRoutine).let { intent ->
                 PendingIntent.getBroadcast(context, 0, intent, 0)
             }
-        val extraIntent = Intent("my.action.routine")
-        extraIntent.putExtra(RoutineService.EXTRA_ROUTINE, mRoutine)
-        sendBroadcast(extraIntent)
 
         // Set the alarm to start at chosen start time
         val calendar: Calendar = Calendar.getInstance().apply {
