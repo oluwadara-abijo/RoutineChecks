@@ -22,8 +22,14 @@ class NewRoutineActivity : AppCompatActivity() {
 
     private var isNewRoutine: Boolean = true
 
-    private var timePicked: String = ""
-    private var datePicked: String = ""
+    //Current date
+    private val calendar = Calendar.getInstance()
+    private val year = calendar.get(Calendar.YEAR)
+    private val month = calendar.get(Calendar.MONTH)
+    private val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    private var timePicked: String = formatTime(calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE] + 10)
+    private var datePicked: String = formatDate(calendar[Calendar.DAY_OF_MONTH], calendar[Calendar.MONTH], calendar[Calendar.YEAR])
 
     private var hourPicked: Int = 0
     private var minutePicked: Int = 0
@@ -51,6 +57,10 @@ class NewRoutineActivity : AppCompatActivity() {
             isNewRoutine = false
             mRoutine = intent.getParcelableExtra(EXTRA_ROUTINE)
             populateUI(mRoutine)
+        } else {
+            //Set date and time to current values
+            startDateInput.setText(datePicked)
+            startTimeInput.setText(timePicked)
         }
 
         setupSpinner()
@@ -155,7 +165,6 @@ class NewRoutineActivity : AppCompatActivity() {
     private fun pickStartTime() {
 
         //Set default values for the picker to be current time
-        val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
@@ -194,12 +203,6 @@ class NewRoutineActivity : AppCompatActivity() {
     }
 
     private fun pickStartDate() {
-
-        //Set default values for the picker to be current date
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         //Create a new instance of DatePickerDialog and show it
         val datePickerDialog = DatePickerDialog(
