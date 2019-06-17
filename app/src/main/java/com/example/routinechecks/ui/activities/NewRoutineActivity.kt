@@ -25,20 +25,18 @@ class NewRoutineActivity : AppCompatActivity() {
 
     private var isNewRoutine: Boolean = true
 
-    //Current date
+    //Current date and time
     private val calendar = Calendar.getInstance()
-    private val year = calendar.get(Calendar.YEAR)
-    private val month = calendar.get(Calendar.MONTH)
-    private val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private var year = calendar.get(Calendar.YEAR)
+    private var month = calendar.get(Calendar.MONTH)
+    private var day = calendar.get(Calendar.DAY_OF_MONTH)
+    private var hour = calendar.get(Calendar.HOUR_OF_DAY)
+    private var minute = calendar.get(Calendar.MINUTE)
 
+    //Set current date and time as default
     private var timePicked: String = formatTime(calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE] + 10)
-    private var datePicked: String = formatDate(calendar[Calendar.DAY_OF_MONTH], calendar[Calendar.MONTH], calendar[Calendar.YEAR])
-
-    private var hourPicked: Int = 0
-    private var minutePicked: Int = 0
-    private var dayPicked: Int = 0
-    private var monthPicked: Int = 0
-    private var yearPicked: Int = 0
+    private var datePicked: String =
+        formatDate(calendar[Calendar.DAY_OF_MONTH], calendar[Calendar.MONTH], calendar[Calendar.YEAR])
 
     companion object {
         const val EXTRA_ROUTINE = "mRoutine"
@@ -117,10 +115,28 @@ class NewRoutineActivity : AppCompatActivity() {
         //If routine is being updated, populate the UI with routine information
         routineNameInput.setText(routine.title)
         routineDescriptionInput.setText(routine.description)
+        //Format routine start date
+        val startDate: Date = routine.startTime
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = startDate
+        startDateInput.setText(
+            formatDate(
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR)
+            )
+        )
+        startTimeInput.setText(formatTime(
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE)
+        ))
+        //Change save button text
         saveButton.text = getString(R.string.update)
+
     }
 
     private fun frequencyPosition(frequency: String): Int {
+
         var position = 2
         when (frequency) {
             FREQ_HOURLY -> position = 1
@@ -178,17 +194,13 @@ class NewRoutineActivity : AppCompatActivity() {
 
     private fun pickStartTime() {
 
-        //Set default values for the picker to be current time
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
         //Create a new instance of TimePickerDialog and show it
         val timePickerDialog = TimePickerDialog(
             this,
             TimePickerDialog.OnTimeSetListener { _, hourSet, minuteSet ->
                 //Set time chosen on edit text
-                hourPicked = hourSet
-                minutePicked = minuteSet
+                hour = hourSet
+                minute = minuteSet
                 timePicked = formatTime(hourSet, minuteSet)
                 startTimeInput.setText(timePicked)
             },
@@ -223,9 +235,9 @@ class NewRoutineActivity : AppCompatActivity() {
             this,
             DatePickerDialog.OnDateSetListener { _, yearSet, monthSet, daySet ->
                 //Set date chosen on edit text
-                dayPicked = daySet
-                monthPicked = monthSet
-                yearPicked = yearSet
+                day = daySet
+                month = monthSet
+                year = yearSet
                 datePicked = formatDate(daySet, monthSet, yearSet)
                 startDateInput.setText(datePicked)
             },
@@ -268,11 +280,11 @@ class NewRoutineActivity : AppCompatActivity() {
         // Set the alarm to start at chosen start time
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.DAY_OF_MONTH, dayPicked)
-            set(Calendar.MONTH, monthPicked)
-            set(Calendar.YEAR, yearPicked)
-            set(Calendar.HOUR_OF_DAY, hourPicked)
-            set(Calendar.MINUTE, minutePicked - 5)
+            set(Calendar.DAY_OF_MONTH, day)
+            set(Calendar.MONTH, month)
+            set(Calendar.YEAR, year)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute - 5)
             set(Calendar.SECOND, 0)
         }
 
