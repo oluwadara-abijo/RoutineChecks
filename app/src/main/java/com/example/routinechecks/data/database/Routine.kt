@@ -15,5 +15,5 @@ data class Routine(
     var frequency: String,
     var missedRoutines: Int = 0,
     var completedRoutines: Int = 0,
-    var startTime: Date? = null
+    var startTime: Date
 ) : Parcelable
