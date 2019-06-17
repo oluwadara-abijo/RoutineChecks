@@ -1,9 +1,12 @@
-package com.example.routinechecks
+package com.example.routinechecks.ui.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.routinechecks.data.Repository
+import com.example.routinechecks.data.database.Routine
+import com.example.routinechecks.data.database.RoutineRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

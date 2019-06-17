@@ -1,4 +1,4 @@
-package com.example.routinechecks
+package com.example.routinechecks.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

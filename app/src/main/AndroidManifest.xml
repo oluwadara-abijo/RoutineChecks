@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".NewRoutineActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.routinechecks.ui.activities.NewRoutineActivity" />
+        <activity android:name="com.example.routinechecks.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,9 +22,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".RoutineService" android:exported="false">
+        <receiver android:name=".AlarmReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="my.action.routine" />
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>

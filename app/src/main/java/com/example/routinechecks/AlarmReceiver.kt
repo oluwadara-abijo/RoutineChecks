@@ -8,9 +8,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import android.media.RingtoneManager
 import android.util.Log
+import com.example.routinechecks.ui.activities.MainActivity
+import com.example.routinechecks.data.database.Routine
 
 
-class RoutineService : BroadcastReceiver() {
+class AlarmReceiver : BroadcastReceiver() {
 
     companion object {
         const val EXTRA_ROUTINE = "mRoutine"
@@ -22,7 +24,6 @@ class RoutineService : BroadcastReceiver() {
     private val channelId: String = "reminder_channel"
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("ON_RECEIVE>>>", "onReceive called")
         //Get the routine
         if (intent.hasExtra(EXTRA_ROUTINE)) {
 

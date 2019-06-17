@@ -1,9 +1,11 @@
-package com.example.routinechecks
+package com.example.routinechecks.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.routinechecks.R
+import com.example.routinechecks.data.database.Routine
 import kotlinx.android.synthetic.main.list_item_routine.view.*
 
 class RoutineListAdapter(private var routines: List<Routine>, private val clickListener: ItemClickListener) :
@@ -37,9 +39,11 @@ class RoutineListAdapter(private var routines: List<Routine>, private val clickL
         override fun onClick(v: View?) {
             val pos = adapterPosition
             val routineClicked = routines[pos]
-            var listenerType : ListenerType = ListenerType.RoutineClickListener(routineClicked)
+            var listenerType : ListenerType =
+                ListenerType.RoutineClickListener(routineClicked)
             when (v?.id) {
-                R.id.editIcon -> listenerType = ListenerType.EditClickListener(routineClicked)
+                R.id.editIcon -> listenerType =
+                    ListenerType.EditClickListener(routineClicked)
             }
             clickListener.onItemClick(routineClicked, listenerType )
         }

@@ -1,7 +1,9 @@
-package com.example.routinechecks
+package com.example.routinechecks.data
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.example.routinechecks.data.database.Routine
+import com.example.routinechecks.data.database.RoutineDao
 
 class Repository(private val routineDao: RoutineDao) {
 

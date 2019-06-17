@@ -1,4 +1,4 @@
-package com.example.routinechecks
+package com.example.routinechecks.ui.activities
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -9,11 +9,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.routinechecks.ui.viewModels.NewRoutineViewModel
+import com.example.routinechecks.R
+import com.example.routinechecks.ui.adapters.RoutineListAdapter
+import com.example.routinechecks.data.database.Routine
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
@@ -68,7 +71,9 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         //Start new routine activity when FAB is clicked
         newRoutine.setOnClickListener {
             val intent = Intent(this, NewRoutineActivity::class.java)
-            startActivityForResult(intent, newRoutineActivityRequestCode)
+            startActivityForResult(intent,
+                newRoutineActivityRequestCode
+            )
         }
 
     }
@@ -94,7 +99,9 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
             is RoutineListAdapter.ListenerType.EditClickListener -> {
                 val editIntent = Intent(this, NewRoutineActivity::class.java)
                 editIntent.putExtra(NewRoutineActivity.EXTRA_ROUTINE, routine)
-                startActivityForResult(editIntent, existingRoutineActivityRequestCode)
+                startActivityForResult(editIntent,
+                    existingRoutineActivityRequestCode
+                )
             }
         }
     }

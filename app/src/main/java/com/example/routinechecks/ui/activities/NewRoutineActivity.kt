@@ -1,4 +1,4 @@
-package com.example.routinechecks
+package com.example.routinechecks.ui.activities
 
 import android.app.*
 import android.content.Context
@@ -12,6 +12,9 @@ import kotlinx.android.synthetic.main.activity_new_routine.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
+import com.example.routinechecks.R
+import com.example.routinechecks.AlarmReceiver
+import com.example.routinechecks.data.database.Routine
 import com.google.android.material.snackbar.Snackbar
 
 class NewRoutineActivity : AppCompatActivity() {
@@ -85,9 +88,20 @@ class NewRoutineActivity : AppCompatActivity() {
         } else {
             val startTime = getRoutineDate(timePicked, datePicked)
             mRoutine = if (isNewRoutine) {
-                Routine(title = title, description = description, frequency = frequency, startTime = startTime)
+                Routine(
+                    title = title,
+                    description = description,
+                    frequency = frequency,
+                    startTime = startTime
+                )
             } else {
-                Routine(mRoutine.id, title, description, frequency, startTime = startTime)
+                Routine(
+                    mRoutine.id,
+                    title,
+                    description,
+                    frequency,
+                    startTime = startTime
+                )
             }
 
             setReminder(this)
@@ -247,7 +261,7 @@ class NewRoutineActivity : AppCompatActivity() {
         lateinit var alarmIntent: PendingIntent
         alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent =
-            Intent(context, RoutineService::class.java).putExtra(RoutineService.EXTRA_ROUTINE, mRoutine).let { intent ->
+            Intent(context, AlarmReceiver::class.java).putExtra(AlarmReceiver.EXTRA_ROUTINE, mRoutine).let { intent ->
                 PendingIntent.getBroadcast(context, 0, intent, 0)
             }
 

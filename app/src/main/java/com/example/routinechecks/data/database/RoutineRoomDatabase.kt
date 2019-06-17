@@ -1,4 +1,4 @@
-package com.example.routinechecks
+package com.example.routinechecks.data.database
 
 import android.content.Context
 import androidx.room.Database
