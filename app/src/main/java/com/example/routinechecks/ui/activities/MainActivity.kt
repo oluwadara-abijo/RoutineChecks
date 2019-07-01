@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -58,7 +59,10 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
 
         //Get all routines in database
         mViewModel.allRoutines.observe(this, Observer { routines ->
-            routines?.let { adapter.setRoutines(routines) }
+            routines?.let {
+                mRoutines = routines
+                adapter.setRoutines(routines)
+            }
             //Show empty view if there are no routines
             if (routines.isEmpty()) {
                 emptyView.visibility = View.VISIBLE
@@ -71,7 +75,8 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
         //Start new routine activity when FAB is clicked
         newRoutine.setOnClickListener {
             val intent = Intent(this, NewRoutineActivity::class.java)
-            startActivityForResult(intent,
+            startActivityForResult(
+                intent,
                 newRoutineActivityRequestCode
             )
         }
@@ -94,12 +99,13 @@ class MainActivity : AppCompatActivity(), RoutineListAdapter.ItemClickListener {
     override fun onItemClick(routine: Routine, listenerType: RoutineListAdapter.ListenerType) {
         when (listenerType) {
             is RoutineListAdapter.ListenerType.RoutineClickListener -> {
-//                Toast.makeText(this, "Item clicked", Toast.LENGTH_SHORT).show()
+                Log.d("R>>>", routine.toString())
             }
             is RoutineListAdapter.ListenerType.EditClickListener -> {
                 val editIntent = Intent(this, NewRoutineActivity::class.java)
                 editIntent.putExtra(NewRoutineActivity.EXTRA_ROUTINE, routine)
-                startActivityForResult(editIntent,
+                startActivityForResult(
+                    editIntent,
                     existingRoutineActivityRequestCode
                 )
             }

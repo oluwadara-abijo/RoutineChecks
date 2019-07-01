@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_new_routine.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
+import android.util.Log
 import com.example.routinechecks.R
 import com.example.routinechecks.AlarmReceiver
 import com.example.routinechecks.data.database.Routine
@@ -177,6 +178,10 @@ class NewRoutineActivity : AppCompatActivity() {
         }
     }
 
+//    private fun addTenMinutes(hour: Int, min: Int) : String {
+//
+//    }
+
     private fun formatTime(hour: Int, min: Int): String {
         //Format time string to contain two digits
         val twoDigitMinute: String = if (min < 10) {
@@ -284,8 +289,9 @@ class NewRoutineActivity : AppCompatActivity() {
             set(Calendar.MONTH, month)
             set(Calendar.YEAR, year)
             set(Calendar.HOUR_OF_DAY, hour)
-            set(Calendar.MINUTE, minute - 5)
+            set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
+            Log.d("R>>>", "$day-$month-$year-$hour-$minute")
         }
 
         //specify alarm frequency
